@@ -1,0 +1,64 @@
+import React, { useEffect, useState } from "react";
+import { RefreshCw } from "lucide-react";
+
+const words = ["Innovate", "Design", "Develop", "Deploy"];
+
+const HeroTextAnimation = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((currentIndex + 1) % words.length);
+    }, 3000); // Change words every 3 seconds
+    return () => clearInterval(interval);
+  }, [currentIndex]);
+
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <div className="text-center">
+        <div className="text-5xl font-bold">
+          We
+          <div className="inline-block">
+            <div className={`cube cube-${currentIndex}`}>
+              {words.map((word, index) => (
+                <div key={index} className={`cube-face face-${index}`}>
+                  {word}
+                </div>
+              ))}
+            </div>
+          </div>
+          Together!
+        </div>
+        <button
+          className="mt-5 px-6 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition duration-200"
+          onClick={() => setCurrentIndex((currentIndex + 1) % words.length)}
+        >
+          <RefreshCw className="inline-block mr-2" /> Change Word
+        </button>
+      </div>
+      <style jsx>{`
+        .cube {
+          perspective: 1000px;
+          display: inline-block;
+        }
+        .cube-face {
+          display: none;
+        }
+        .face-${currentIndex} {
+          display: block;
+          animation: rotateCube 3s forwards;
+        }
+        @keyframes rotateCube {
+          from {
+            transform: rotateX(0) translateY(0);
+          }
+          to {
+            transform: rotateX(-90deg) translateY(-100%);
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default HeroTextAnimation;
